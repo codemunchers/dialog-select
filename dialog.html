@@ -1,0 +1,53 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>dialog demo</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="jquery-ui.js"></script>
+</head>
+<body>
+  
+  <div id="dialog" title="Dialog Title">
+   Popup avec un select dans le titre.
+   <br /><br />
+   Voir les commentaires dans dialog.html pour instructions.
+   <br /><br />
+   tester dans IE11, Firefox et Chrome
+  </div>
+
+<script>
+
+// options qui vont etre afficher dans le popup
+// Pour permetre la selection dans les options j'ai du hacker la ligne #872 of jquery-ui.js
+// Faut metre un ID dans le tag select
+// J'ai pas trouver de facon plus elegante.
+function get_options(){
+    return "<div id='options' style='z-index:999;'><select id='selectoid'>\
+        <option value=1>Option A</option>\
+        <option value=2>Option B</option>\
+        <option value=3>Option C</option>\
+        </select>\
+    </div>";
+}
+
+
+// pour afficher du HTML dans le titre du dialag il fallait re-ecrire cette methode:
+$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+    _title: function(title) {
+        if (!this.options.title ) {
+            title.html("&#160;");
+        } else {
+            title.html(this.options.title);
+        }
+    }
+}));
+
+
+$("#dialog").dialog({ autoOpen: false, title: get_options });
+$( "#dialog" ).dialog( "open" );
+
+</script>
+</body>
+</html>
